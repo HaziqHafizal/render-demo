@@ -23,7 +23,6 @@ use Illuminate\Support\Facades\Artisan;
 Route::get('/fix-and-migrate', function () {
     // 1. Force clear the configuration cache
     Artisan::call('config:clear');
-    Artisan::call('cache:clear');
     
     // 2. Debug: Check what Host Laravel sees NOW
     $host = config('database.connections.pgsql.host');
