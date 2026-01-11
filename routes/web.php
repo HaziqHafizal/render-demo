@@ -17,20 +17,31 @@ Route::get('/db-test', function () {
     }
 });
 
-Route::get('/haziq', function () {
-    try {
-        DB::connection()->getPdo();
-        return "WTJINGGG JADI DOHHHH";
-    } catch (\Exception $e) {
-        return "syibal error" . $e;
-    }
-});
 
 use Illuminate\Support\Facades\Artisan;
 
-Route::get('/run-migration', function () {
-    // This command triggers the migration programmatically
-    Artisan::call('migrate', ['--force' => true]);
+Route::get('/fix-and-migrate', function () {
+    // 1. Force clear the configuration cache
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
     
-    return "Migration completed! " . Artisan::output();
+    // 2. Debug: Check what Host Laravel sees NOW
+    $host = config('database.connections.pgsql.host');
+    
+    try {
+        // 3. Test the connection
+        DB::connection()->getPdo();
+        
+        // 4. If connection works, run migration
+        Artisan::call('migrate', ['--force' => true]);
+        
+        return "✅ SUCCESS! <br>" .
+               "Connected to Host: $host <br>" .
+               "Migration Status: " . Artisan::output();
+               
+    } catch (\Exception $e) {
+        return "❌ ERROR. <br>" .
+               "Laravel is trying to connect to: <b>$host</b> <br>" .
+               "Full Error: " . $e->getMessage();
+    }
 });
