@@ -16,3 +16,12 @@ Route::get('/db-test', function () {
         return "Could not connect to the database.  Please check your configuration. error:" . $e;
     }
 });
+
+Route::get('/haziq', function () {
+    try {
+        DB::connection()->getPdo();
+        return "WTJINGGG JADI DOHHHH";
+    } catch (\Exception $e) {
+        return "syibal error" . $e;
+    }
+});
