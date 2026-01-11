@@ -18,7 +18,7 @@ return [
     |
     */
 
-    'driver' => 'cookie',
+    'driver' => 'cookie', // <--- MAKE SURE THIS COMMA IS HERE
 
     /*
     |--------------------------------------------------------------------------
