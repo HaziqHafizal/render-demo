@@ -25,3 +25,12 @@ Route::get('/haziq', function () {
         return "syibal error" . $e;
     }
 });
+
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/run-migration', function () {
+    // This command triggers the migration programmatically
+    Artisan::call('migrate', ['--force' => true]);
+    
+    return "Migration completed! " . Artisan::output();
+});
